@@ -1,0 +1,138 @@
+openapi: 3.1.0
+info:
+  title: Clockify API
+  description: Endpoints relevant for sync to Jira
+  version: 1.0.0
+servers:
+  - url: https://api.clockify.me/api/v1/
+    description: Clockify API server
+paths:
+  '/workspaces/{workspaceId}/user/{userId}/time-entries':
+    get:
+      operationId: getTimeEntries
+      tags:
+        - Clockify
+      description: Get time entries for a workspace
+      parameters:
+        - name: workspaceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the workspace to retrieve time entries for
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the user to retrieve time entries for
+        - name: start
+          in: query
+          required: false
+          schema:
+              type: string
+              format: date-time
+          description: Start date and time for filtering time entries (ISO 8601 format)
+        - name: end
+          in: query
+          required: false
+          schema:
+              type: string
+              format: date-time
+          description: End date and time for filtering time entries (ISO 8601 format)
+        - name: page-size
+          in: query
+          required: false
+          schema:
+              type: integer
+              format: int32
+          description: Number of entries to return per page (default is 50)
+        - name: page
+          in: query
+          required: false
+          schema:
+              type: integer
+              format: int32
+          description: Number of the page (default is 1)
+        - name: project
+          in: query
+          required: false
+          schema:
+              type: string
+          description: Filter by project ID
+      responses:
+        '200':
+          description: A list of time entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeEntry'
+  '/workspaces/{workspaceId}/time-entries/{entryId}':
+    get:
+        operationId: getTimeEntry
+        tags:
+            - Clockify
+        description: Get a specific time entry by ID
+        parameters:
+            - name: workspaceId
+              in: path
+              required: true
+              schema:
+                  type: string
+              description: The ID of the workspace to which the time entry belongs
+            - name: entryId
+              in: path
+              required: true
+              schema:
+                  type: string
+              description: The ID of the time entry to retrieve
+        responses:
+            '200':
+              description: A single time entry
+              content:
+                  application/json:
+                    schema:
+                        $ref: '#/components/schemas/TimeEntry'
+
+components:
+  schemas:
+    TimeEntry:
+      type: object
+      required:
+        - id
+        - timeInterval
+        - projectId
+        - userId
+        - description
+      properties:
+        id:
+          type: string
+          description: The ID of the time entry
+        description:
+          type: string
+          description: A description of the time entry
+        timeInterval:
+          $ref: '#/components/schemas/TimeInterval'
+        projectId:
+          type: string
+          description: The ID of the project associated with the time entry
+        userId:
+          type: string
+          description: The ID of the user who created the time entry
+    TimeInterval:
+      type: object
+      properties:
+        duration:
+          type: string
+          format: duration
+          description: The duration of the time entry in seconds
+        start:
+          type: string
+          format: date-time
+          description: The start time of the time entry
+        end:
+          type: string
+          format: date-time
+          description: The end time of the time entry

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: clockify-jira
+  main:
+    banner-mode: off
+
+clockify:
+  workspace-id: ${CLOCKIFY_WORKSPACE:}
+  user-id: ${CLOCKIFY_USER:}
+  project-id: ${CLOCKIFY_PROJECT:}
+  api:
+    token: ${CLOCKIFY_API_TOKEN:}
+    base-url: https://api.clockify.me/api/v1
+
+jira:
+  account-id: ${JIRA_ACCOUNT_ID:}
+  api:
+    email: ${JIRA_API_EMAIL:}
+    token: ${JIRA_API_TOKEN:}
+    base-url: ${JIRA_BASE_URL:}

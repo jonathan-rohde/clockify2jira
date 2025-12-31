@@ -1,0 +1,10 @@
+# Get all workspaces
+GET https://api.clockify.me/api/v1/workspaces
+X-Api-Key: {{ CLOCKIFY_API_KEY }}
+
+###
+
+# Get user information
+GET https://api.clockify.me/api/v1/user
+X-Api-Key: {{ CLOCKIFY_API_KEY }}
+
