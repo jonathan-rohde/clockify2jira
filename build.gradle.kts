@@ -17,19 +17,21 @@ version = "1.0.0"
 
 kotlin.sourceSets["main"].kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/main/kotlin"))
 
+val coroutinesVersion = "1.6.4"
+val fasterxmlJacksonVersion = "2.20.1"
+
 repositories {
     mavenCentral()
     maven("https://packages.atlassian.com/repository/public")
 }
 
 dependencies {
-    val coroutines_version = "1.6.4"
-    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
-    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version")
-    implementation("com.fasterxml.jackson.core:jackson-core:2.19.1")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.1")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.1")
+    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion")
+    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutinesVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$fasterxmlJacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$fasterxmlJacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$fasterxmlJacksonVersion")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     testImplementation(kotlin("test"))
     implementation("io.github.microutils:kotlin-logging:3.0.5")
