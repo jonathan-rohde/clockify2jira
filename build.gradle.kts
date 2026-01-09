@@ -28,7 +28,7 @@ dependencies {
     implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
     implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version")
     implementation("com.fasterxml.jackson.core:jackson-core:2.19.1")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.1")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     testImplementation(kotlin("test"))
