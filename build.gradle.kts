@@ -32,7 +32,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:$fasterxmlJacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$fasterxmlJacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$fasterxmlJacksonVersion")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:5.3.2")
     testImplementation(kotlin("test"))
     implementation("io.github.microutils:kotlin-logging:3.0.5")
 
