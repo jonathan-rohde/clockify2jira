@@ -98,5 +98,5 @@ tasks.jar {
 }
 
 tasks.bootJar {
-    archiveFileName.set("clockify2jira.jar")
+    archiveFileName.set("clockify2jira-$version.jar")
 }
