@@ -3,7 +3,6 @@ package clockify2jira
 import clockify2jira.clockify.ClockifyService
 import clockify2jira.clockify.groupBy
 import clockify2jira.jira.JiraService
-import mu.KLogging
 import mu.NamedKLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
@@ -12,7 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 import java.net.URI
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import kotlin.system.exitProcess
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -27,7 +30,7 @@ class MainApplication : ApplicationRunner {
     @Autowired
     lateinit var jiraService: JiraService
 
-    companion object: NamedKLogging("Clockify2Jira")
+    companion object : NamedKLogging("Clockify2Jira")
 
     override fun run(args: ApplicationArguments) {
         val arguments = args.parse()
@@ -39,7 +42,7 @@ class MainApplication : ApplicationRunner {
         val dryRun = arguments.dryRun
         logger.info("Fetched ${lastEntries.size} entries from Clockify")
 
-        if(lastEntries.any { it.jiraKey == null }) {
+        if (lastEntries.any { it.jiraKey == null }) {
             val missingKeys = lastEntries.filter { it.jiraKey == null }.joinToString("\n") { it.toString() }
             logger.error { "Some entries do not have a Jira key: \n$missingKeys" }
             exitProcess(1)
@@ -52,12 +55,12 @@ class MainApplication : ApplicationRunner {
             .forEach { (key, days) ->
                 val uri = getWorklogUriForIssueKey(key)
                 days.toSortedMap(compareBy { it }).forEach { (date, minutes) ->
-                    logger.info { "Adding worklog to $key for $date: $minutes minutes" }
+                    logger.info { "Adding worklog to $key for $date: $minutes minutes".withDryRun(dryRun) }
                     if (!dryRun) {
                         jiraService.addWorklog(uri, date.toOffsetDateTime(), minutes.toDuration(DurationUnit.MINUTES))
                     }
                 }
-        }
+            }
     }
 
     private val uriCache = mutableMapOf<String, URI>()
@@ -66,6 +69,13 @@ class MainApplication : ApplicationRunner {
             jiraService.getWorklogUriForIssueKey(key)
         }
     }
+
+    private fun String.withDryRun(dryRun: Boolean) =
+        if (dryRun) {
+            "Dry run: $this"
+        } else {
+            this
+        }
 
     private fun LocalDateTime.toOffsetDateTime(): OffsetDateTime =
         ZonedDateTime.of(this, ZoneId.of("Europe/Berlin")).toOffsetDateTime()
