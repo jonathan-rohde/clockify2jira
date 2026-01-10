@@ -46,7 +46,7 @@ dependencies {
     implementation("com.atlassian.jira:jira-rest-java-client-core:7.0.0-BBSDEV-33699-dev1")
     implementation("jakarta.ws.rs:jakarta.ws.rs-api:4.0.0")
 }
-
+// another change
 
 tasks.test {
     useJUnitPlatform()
