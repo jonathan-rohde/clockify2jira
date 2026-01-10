@@ -47,8 +47,6 @@ dependencies {
     implementation("jakarta.ws.rs:jakarta.ws.rs-api:4.0.0")
 }
 
-
-
 tasks.test {
     useJUnitPlatform()
 }
