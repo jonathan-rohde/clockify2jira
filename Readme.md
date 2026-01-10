@@ -20,12 +20,12 @@ to a Jira installation
 ### Required environment
 
 ```
-CLOCKIFY_WORKSPACE=         # find out by executing api/clockify.http:2
-CLOCKIFY_USER=              # find out by executing api/clockify.http:8
-CLOCKIFY_PROJECT=           # check also the output of previous requests
-CLOCKIFY_API_TOKEN=         # generate on clockfiy account settings
-JIRA_ACCOUNT_ID=            # the identifier from your jira account page
-JIRA_API_EMAIL=             # the email you use for login
-JIRA_API_TOKEN=             # general token works. Granular needs read/write worklog
-JIRA_BASE_URL=              # url to jira instance
+CLOCKIFY_WORKSPACE=    # find out by executing api/clockify.http:2
+CLOCKIFY_USER=         # find out by executing api/clockify.http:8
+CLOCKIFY_PROJECT=      # check also the output of previous requests
+CLOCKIFY_API_TOKEN=    # generate on clockfiy account settings
+JIRA_ACCOUNT_ID=       # the identifier from your jira account page
+JIRA_API_EMAIL=        # the email you use for login
+JIRA_API_TOKEN=        # general token works. Granular needs read/write worklog
+JIRA_BASE_URL=         # url to jira instance
 ```
