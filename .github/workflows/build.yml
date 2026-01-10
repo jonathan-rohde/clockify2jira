@@ -25,6 +25,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: log cache
+        run: |
+          ls -al .gradle
+          ls -al ~/.gradle
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
