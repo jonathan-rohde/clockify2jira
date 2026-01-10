@@ -1,6 +1,7 @@
 name: build.yml
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   build:
