@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "clockify2jira"
-version = "1.0.2"
+version = "1.0.3"
 
 kotlin.sourceSets["main"].kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/main/kotlin"))
 
