@@ -25,9 +25,6 @@ repositories {
 }
 
 dependencies {
-    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion")
-    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutinesVersion")
     implementation("com.fasterxml.jackson.core:jackson-core:$fasterxmlJacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$fasterxmlJacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$fasterxmlJacksonVersion")
@@ -40,11 +37,8 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("com.atlassian.jira:jira-api:10.6.1")
-    implementation("commons-httpclient:commons-httpclient:3.1")
-    implementation("com.atlassian.jira:jira-rest-java-client-api:7.0.0-BBSDEV-33699-dev1")
-    implementation("com.atlassian.jira:jira-rest-java-client-core:7.0.0-BBSDEV-33699-dev1")
-    implementation("jakarta.ws.rs:jakarta.ws.rs-api:4.0.0")
+    implementation("com.atlassian.jira:jira-rest-java-client-core:7.0.1")
+    implementation("io.atlassian.fugue:fugue:6.1.2")
 }
 
 tasks.test {
