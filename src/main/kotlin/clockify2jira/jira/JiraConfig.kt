@@ -1,11 +1,14 @@
 package clockify2jira.jira
 
-import com.atlassian.jira.rest.client.api.JiraRestClient
-import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory
+import clockify2jira.jira.api.IssueWorklogsApi
+import mu.KLogging
+import okhttp3.Credentials
+import okhttp3.OkHttpClient
+import org.apache.http.HttpHeaders
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.net.URI
 
 @ConfigurationProperties(prefix = "jira.api")
 data class JiraApiConfigProperties(
@@ -28,12 +31,26 @@ data class JiraConfigProperties(
 @Configuration
 class JiraConfig {
 
+    companion object : KLogging()
+
     @Bean
-    fun jiraClient(config: JiraApiConfigProperties): JiraRestClient {
-        return AsynchronousJiraRestClientFactory().createWithBasicHttpAuthentication(
-            URI.create(config.baseUrl),
-            config.email,
-            config.token
-        )
+    fun jiraApi(
+        config: JiraApiConfigProperties,
+        @Qualifier("jiraHttpClient") httpClient: OkHttpClient
+    ): IssueWorklogsApi {
+        return IssueWorklogsApi(basePath = config.baseUrl, client = httpClient)
+    }
+
+    @Bean("jiraHttpClient")
+    fun jiraHttpClient(config: JiraApiConfigProperties): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val credentials = Credentials.basic(config.email, config.token)
+                val request = chain.request().newBuilder()
+                    .header(HttpHeaders.AUTHORIZATION, credentials)
+                    .build()
+                chain.proceed(request)
+            }
+            .build()
     }
 }
