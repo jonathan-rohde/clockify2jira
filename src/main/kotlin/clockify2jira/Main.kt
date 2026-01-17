@@ -52,12 +52,25 @@ class MainApplication : ApplicationRunner {
 
         data.toSortedMap(compareBy { it })
             .forEach { (key, days) ->
-                days.toSortedMap(compareBy { it }).forEach { (date, minutes) ->
-                    logger.info { "Adding worklog to $key for $date: $minutes minutes".withDryRun(dryRun) }
-                    if (!dryRun) {
-                        jiraService.addWorklog(key, date.toOffsetDateTime(), minutes.toDuration(DurationUnit.MINUTES))
+                days.toSortedMap(compareBy { it })
+                    .filter { (date, minutes) ->
+                        !jiraService.hasWorklogs(key, date.toOffsetDateTime(), minutes.toDuration(DurationUnit.MINUTES))
+                            .also { result ->
+                                if (result) {
+                                    logger.info { "Ignore worklog to $key for $date. An worklog already exists" }
+                                }
+                            }
                     }
-                }
+                    .forEach { (date, minutes) ->
+                        logger.info { "Adding worklog to $key for $date: $minutes minutes".withDryRun(dryRun) }
+                        if (!dryRun) {
+                            jiraService.addWorklog(
+                                key,
+                                date.toOffsetDateTime(),
+                                minutes.toDuration(DurationUnit.MINUTES)
+                            )
+                        }
+                    }
             }
     }
 
