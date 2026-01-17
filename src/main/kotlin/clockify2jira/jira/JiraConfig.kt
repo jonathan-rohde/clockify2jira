@@ -3,12 +3,14 @@ package clockify2jira.jira
 import clockify2jira.jira.api.IssueWorklogsApi
 import mu.KLogging
 import okhttp3.Credentials
+import okhttp3.Headers
 import okhttp3.OkHttpClient
-import org.apache.http.HttpHeaders
+import okhttp3.internal.http2.Header
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.net.http.HttpHeaders
 
 @ConfigurationProperties(prefix = "jira.api")
 data class JiraApiConfigProperties(
@@ -47,7 +49,7 @@ class JiraConfig {
             .addInterceptor { chain ->
                 val credentials = Credentials.basic(config.email, config.token)
                 val request = chain.request().newBuilder()
-                    .header(HttpHeaders.AUTHORIZATION, credentials)
+                    .header("Authorization", credentials)
                     .build()
                 chain.proceed(request)
             }
