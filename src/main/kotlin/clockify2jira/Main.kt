@@ -10,7 +10,6 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
-import java.net.URI
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -53,21 +52,13 @@ class MainApplication : ApplicationRunner {
 
         data.toSortedMap(compareBy { it })
             .forEach { (key, days) ->
-                val uri = getWorklogUriForIssueKey(key)
                 days.toSortedMap(compareBy { it }).forEach { (date, minutes) ->
                     logger.info { "Adding worklog to $key for $date: $minutes minutes".withDryRun(dryRun) }
                     if (!dryRun) {
-                        jiraService.addWorklog(uri, date.toOffsetDateTime(), minutes.toDuration(DurationUnit.MINUTES))
+                        jiraService.addWorklog(key, date.toOffsetDateTime(), minutes.toDuration(DurationUnit.MINUTES))
                     }
                 }
             }
-    }
-
-    private val uriCache = mutableMapOf<String, URI>()
-    private fun getWorklogUriForIssueKey(key: String): URI {
-        return uriCache.getOrPut(key) {
-            jiraService.getWorklogUriForIssueKey(key)
-        }
     }
 
     private fun String.withDryRun(dryRun: Boolean) =

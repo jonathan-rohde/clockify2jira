@@ -1,41 +1,32 @@
 package clockify2jira.jira
 
-import com.atlassian.jira.rest.client.api.JiraRestClient
-import com.atlassian.jira.rest.client.api.domain.input.WorklogInput
+import clockify2jira.jira.api.IssueWorklogsApi
+import clockify2jira.jira.model.Worklog
 import mu.KLogging
-import org.joda.time.DateTime
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.net.URI
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.time.Duration
 
 interface JiraService {
-
-    fun getWorklogUriForIssueKey(issueKey: String): URI
-    fun addWorklog(uri: URI, start: OffsetDateTime, worklog: Duration)
+    fun addWorklog(key: String, start: OffsetDateTime, worklog: Duration)
 }
 
 @Service
-class JiraServiceImpl : JiraService {
+class JiraServiceImpl(
+    private val issueWorklogsApi: IssueWorklogsApi
+) : JiraService {
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 
-    @Autowired
-    private lateinit var jiraRestClient: JiraRestClient
-
-    override fun getWorklogUriForIssueKey(issueKey: String): URI {
-        return jiraRestClient.issueClient.getIssue(issueKey).get().worklogUri
+    override fun addWorklog(key: String, start: OffsetDateTime, worklog: Duration) {
+        issueWorklogsApi.addWorklog(key, worklog.toWorklog(key, start))
     }
 
-    override fun addWorklog(uri: URI, start: OffsetDateTime, worklog: Duration) {
-        jiraRestClient.issueClient.addWorklog(uri, worklog.toWorklogEntry(uri, start)).get()
-    }
-
-    private fun Duration.toWorklogEntry(uri: URI, start: OffsetDateTime): WorklogInput {
-        return WorklogInput.create(
-            URI("$uri/worklog"),
-            "",
-            DateTime.parse(start.toString()),
-            this.inWholeMinutes.toInt(),
+    private fun Duration.toWorklog(key: String, start: OffsetDateTime): Worklog {
+        return Worklog(
+            issueId = key,
+            started = formatter.format(start),
+            timeSpentSeconds = inWholeSeconds
         )
     }
 

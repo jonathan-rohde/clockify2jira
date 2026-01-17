@@ -21,7 +21,6 @@ val fasterxmlJacksonVersion = "2.20.1"
 
 repositories {
     mavenCentral()
-    maven("https://packages.atlassian.com/repository/public")
 }
 
 dependencies {
@@ -36,9 +35,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-    implementation("com.atlassian.jira:jira-rest-java-client-core:7.0.1")
-    implementation("io.atlassian.fugue:fugue:6.1.2")
 }
 
 tasks.test {
@@ -60,7 +56,7 @@ kotlin {
 tasks.register("openApiGenerateAll") {
     group = "generation"
     description = "Generates stubs and models from all supported OpenAPI specs"
-    dependsOn("openApiGenerateClockify")
+    dependsOn("openApiGenerateClockify", "openApiGenerateJira")
 }
 
 tasks.register("openApiGenerateClockify", GenerateTask::class) {
@@ -70,6 +66,27 @@ tasks.register("openApiGenerateClockify", GenerateTask::class) {
     outputDir = "${buildDir}/generated/openapi"
     apiPackage = "clockify2jira.clockify.api"
     modelPackage = "clockify2jira.clockify.model"
+    configOptions = mapOf(
+        "exceptionHandler" to "false",
+        "serializationLibrary" to "jackson",
+        "dateLibrary" to "java8",
+        "disallowAdditionalPropertiesIfNotPresent" to "false",
+        "hideGenerationTimestamp" to "true",
+        "enumPropertyNaming" to "UPPERCASE",
+        "interfaceOnly" to "true",
+        "useTags" to "true",
+        "documentationProvider" to "none",
+        "useSpringBoot3" to "true"
+    )
+}
+
+tasks.register("openApiGenerateJira", GenerateTask::class) {
+    group = "generation"
+    generatorName = "kotlin"
+    inputSpec = File("${projectDir}/api/jira/jira-v3-openapi.yaml").toURI().toString()
+    outputDir = "${buildDir}/generated/openapi"
+    apiPackage = "clockify2jira.jira.api"
+    modelPackage = "clockify2jira.jira.model"
     configOptions = mapOf(
         "exceptionHandler" to "false",
         "serializationLibrary" to "jackson",
