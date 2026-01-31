@@ -29,7 +29,9 @@ class MainApplication : ApplicationRunner {
     @Autowired
     lateinit var jiraService: JiraService
 
-    companion object : NamedKLogging("Clockify2Jira")
+    companion object : NamedKLogging("Clockify2Jira") {
+        private const val WEEK: Long = 7
+    }
 
     override fun run(args: ApplicationArguments) {
         val arguments = args.parse()
@@ -91,7 +93,7 @@ class MainApplication : ApplicationRunner {
         val groupBy = getOptionValues("groupBy")?.firstOrNull()
 
         return Arguments(
-            start = startDate?.let { LocalDate.parse(it) } ?: LocalDate.now().minusDays(7),
+            start = startDate?.let { LocalDate.parse(it) } ?: LocalDate.now().minusDays(WEEK),
             end = endDate?.let { LocalDate.parse(it) } ?: LocalDate.now(),
             dryRun = dryRun,
             groupBy = groupBy.parseGroupBy()

@@ -1,10 +1,10 @@
 package clockify2jira.clockify
 
+import clockify2jira.clockify.api.ClockifyApi
+import clockify2jira.clockify.model.TimeEntry
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import clockify2jira.clockify.api.ClockifyApi
-import clockify2jira.clockify.model.TimeEntry
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -16,6 +16,7 @@ interface ClockifyService {
 
 }
 
+
 @Service
 class ClockifyServiceImpl : ClockifyService {
 
@@ -25,9 +26,8 @@ class ClockifyServiceImpl : ClockifyService {
     @Autowired
     private lateinit var config: ClockifyConfigProperties
 
-
     override fun getLastEntries(start: LocalDate, end: LocalDate): List<ClockifyEntry> {
-        require(config.pageSize in 1..5000) { "Number of entries must be between 1 and 5000" }
+        require(config.pageSize in allowedItemCount) { "Number of entries must be between 1 and 5000" }
 
         var pageNumber = 1
         return generateSequence { fetchPage(start, end, pageNumber++) }
@@ -48,7 +48,10 @@ class ClockifyServiceImpl : ClockifyService {
         ).ifEmpty { null }
     }
 
-    companion object : KLogging()
+    companion object : KLogging() {
+
+        private val allowedItemCount = 1..5000
+    }
 
     private fun LocalDate.atSyncStart(): OffsetDateTime =
         atStartOfDay().atZone(ZoneId.of("Europe/Berlin")).toOffsetDateTime()

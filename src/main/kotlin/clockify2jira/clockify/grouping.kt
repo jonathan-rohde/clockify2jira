@@ -1,17 +1,24 @@
 package clockify2jira.clockify
 
 import clockify2jira.GroupBy
-import java.time.*
+import java.time.DayOfWeek
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 private val groupKey = mapOf(
-    GroupBy.ENTRY to { it: OffsetDateTime -> it.toLocalDateTime() },
-    GroupBy.DAY to { it: OffsetDateTime -> it.toLocalDateTime().withFixedTime() },
-    GroupBy.WEEK to { it: OffsetDateTime -> it.getFirstDayOfWeek() },
-    GroupBy.MONTH to { it: OffsetDateTime -> it.withDayOfMonth(1).toLocalDateTime().withFixedTime() }
+    GroupBy.ENTRY to { dateTime: OffsetDateTime -> dateTime.toLocalDateTime() },
+    GroupBy.DAY to { dateTime: OffsetDateTime -> dateTime.toLocalDateTime().withFixedTime() },
+    GroupBy.WEEK to { dateTime: OffsetDateTime -> dateTime.getFirstDayOfWeek() },
+    GroupBy.MONTH to { dateTime: OffsetDateTime -> dateTime.withDayOfMonth(1).toLocalDateTime().withFixedTime() }
 )
+private const val FIXED_HOUR = 8
+private const val FIXED_MINUTES = 0
+private const val FIXED_SECOND = 0
+private const val FIXED_NANO = 0
 
 fun Map.Entry<String, List<ClockifyEntry>>.groupBy(groupBy: GroupBy): Map<LocalDateTime, Long> {
-    return value.groupBy { groupKey[groupBy]!!(OffsetDateTime.parse(it.start)) }.mapValues { (_, entries) -> entries.sumMinutes() }
+    return value.groupBy { groupKey[groupBy]!!(OffsetDateTime.parse(it.start)) }
+        .mapValues { (_, entries) -> entries.sumMinutes() }
 }
 
 private fun List<ClockifyEntry>.sumMinutes(): Long {
@@ -30,5 +37,5 @@ private fun OffsetDateTime.getFirstDayOfWeek(): LocalDateTime {
 }
 
 private fun LocalDateTime.withFixedTime(): LocalDateTime {
-    return withHour(8).withMinute(0).withSecond(0).withNano(0)
+    return withHour(FIXED_HOUR).withMinute(FIXED_MINUTES).withSecond(FIXED_SECOND).withNano(FIXED_NANO)
 }

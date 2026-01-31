@@ -35,7 +35,10 @@ data class ClockifyConfigProperties(
 class ClockifyConfig {
 
     @Bean
-    fun clockifyApi(config: ClockifyApiConfigProperties, @Qualifier("clockifyHttpClient") httpClient: OkHttpClient): ClockifyApi {
+    fun clockifyApi(
+        config: ClockifyApiConfigProperties,
+        @Qualifier("clockifyHttpClient") httpClient: OkHttpClient
+    ): ClockifyApi {
         return ClockifyApi(basePath = config.baseUrl, client = httpClient)
     }
 
