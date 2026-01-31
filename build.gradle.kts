@@ -74,10 +74,11 @@ detekt {
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
     reports {
-        html.required.set(true)
-        xml.required.set(true)
-        txt.required.set(true)
-        sarif.required.set(true)
+        html.required = true
+        md.required = true
+        xml.required = false
+        txt.required = false
+        sarif.required = false
     }
 }
 
