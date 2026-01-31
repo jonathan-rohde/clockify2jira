@@ -9,13 +9,10 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
 
-
 interface ClockifyService {
 
     fun getLastEntries(start: LocalDate, end: LocalDate): List<ClockifyEntry>
-
 }
-
 
 @Service
 class ClockifyServiceImpl : ClockifyService {

@@ -38,9 +38,7 @@ class ClockifyConfig {
     fun clockifyApi(
         config: ClockifyApiConfigProperties,
         @Qualifier("clockifyHttpClient") httpClient: OkHttpClient
-    ): ClockifyApi {
-        return ClockifyApi(basePath = config.baseUrl, client = httpClient)
-    }
+    ) = ClockifyApi(basePath = config.baseUrl, client = httpClient)
 
     @Bean
     @Qualifier("clockifyHttpClient")

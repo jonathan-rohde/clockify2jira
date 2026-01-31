@@ -21,8 +21,8 @@ fun Map.Entry<String, List<ClockifyEntry>>.groupBy(groupBy: GroupBy): Map<LocalD
         .mapValues { (_, entries) -> entries.sumMinutes() }
 }
 
-private fun List<ClockifyEntry>.sumMinutes(): Long {
-    return fold(0L) { acc, entry -> acc + (entry.duration?.inWholeMinutes ?: 0L) }
+private fun List<ClockifyEntry>.sumMinutes() = fold(0L) { acc, entry ->
+    acc + (entry.duration?.inWholeMinutes ?: 0L)
 }
 
 val weekCache = mutableMapOf<Triple<Int, Int, Int>, LocalDateTime>()
@@ -36,6 +36,5 @@ private fun OffsetDateTime.getFirstDayOfWeek(): LocalDateTime {
     }
 }
 
-private fun LocalDateTime.withFixedTime(): LocalDateTime {
-    return withHour(FIXED_HOUR).withMinute(FIXED_MINUTES).withSecond(FIXED_SECOND).withNano(FIXED_NANO)
-}
+private fun LocalDateTime.withFixedTime() =
+    withHour(FIXED_HOUR).withMinute(FIXED_MINUTES).withSecond(FIXED_SECOND).withNano(FIXED_NANO)

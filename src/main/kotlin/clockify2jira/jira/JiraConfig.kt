@@ -36,9 +36,7 @@ class JiraConfig {
     fun jiraApi(
         config: JiraApiConfigProperties,
         @Qualifier("jiraHttpClient") httpClient: OkHttpClient
-    ): IssueWorklogsApi {
-        return IssueWorklogsApi(basePath = config.baseUrl, client = httpClient)
-    }
+    ) = IssueWorklogsApi(basePath = config.baseUrl, client = httpClient)
 
     @Bean("jiraHttpClient")
     fun jiraHttpClient(config: JiraApiConfigProperties): OkHttpClient {
