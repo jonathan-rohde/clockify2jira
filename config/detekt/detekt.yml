@@ -1,0 +1,52 @@
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+
+config:
+  validation: true
+  warningsAsErrors: true
+  checkExhaustiveness: false
+
+output-reports:
+  active: true
+
+complexity:
+  TooManyFunctions:
+    active: false
+  LongMethod:
+    threshold: 80
+
+formatting:
+  AnnotationSpacing:
+    active: false
+  AnnotationOnSeparateLine:
+    active: false
+  MaximumLineLength:
+    maxLineLength: 120
+  ParameterListWrapping:
+    maxLineLength: 100
+
+naming:
+  PackageNaming:
+    packagePattern: '[a-z][A-Za-z0-9]*(\.[a-z][A-Za-z0-9]*)*'
+
+performance:
+  SpreadOperator:
+    active: false
+
+style:
+  ExpressionBodySyntax:
+    active: true
+    includeLineWrapping: false
+  MaxLineLength:
+    active: true
+  MagicNumber:
+    active: true
+  UnusedPrivateClass:
+    active: true
+  UnusedPrivateMember:
+    active: true
+  ReturnCount:
+    active: false
+  UnusedImports:
+    active: true

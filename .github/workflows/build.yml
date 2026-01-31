@@ -35,3 +35,12 @@ jobs:
         run: |
           ./gradlew test --no-daemon
 
+      - name: Run detekt
+        run: |
+          ./gradlew detekt --no-daemon
+
+      - name: Publish detekt reports
+        if: always()
+        run: cat build/reports/detekt/detekt.md >> $GITHUB_STEP_SUMMARY
+
+

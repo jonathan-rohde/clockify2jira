@@ -9,6 +9,7 @@ plugins {
     id("org.springframework.boot") version "4.0.1"
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("plugin.spring") version "2.3.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
 group = "clockify2jira"
@@ -35,6 +36,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
 }
 
 tasks.test {
@@ -51,6 +54,34 @@ tasks.withType<KotlinCompile> {
 
 kotlin {
     jvmToolchain(21)
+}
+
+dependencyManagement {
+    configurations.matching { it.name == "detekt" }.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.jetbrains.kotlin") {
+                @Suppress("UnstableApiUsage")
+                useVersion(io.gitlab.arturbosch.detekt.getSupportedKotlinVersion())
+            }
+        }
+    }
+}
+
+detekt {
+    toolVersion = "1.23.8"
+    config.setFrom(files("config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+    autoCorrect = true
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        html.required = true
+        md.required = true
+        xml.required = false
+        txt.required = false
+        sarif.required = false
+    }
 }
 
 tasks.register("openApiGenerateAll") {
