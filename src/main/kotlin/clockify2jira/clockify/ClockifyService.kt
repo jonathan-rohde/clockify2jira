@@ -31,7 +31,7 @@ class ClockifyServiceImpl : ClockifyService {
             .flatMap {
                 it.map { entry -> entry.toClockifyEntry() }
             }
-            .filter { entry -> entry.duration != null}
+            .filter { entry -> entry.duration != null }
             .toList()
     }
 
