@@ -18,7 +18,7 @@ version = "1.0.7"
 kotlin.sourceSets["main"].kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/main/kotlin"))
 
 val coroutinesVersion = "1.10.2"
-val fasterxmlJacksonVersion = "2.21.0"
+val fasterxmlJacksonVersion = "2.21.1"
 
 repositories {
     mavenCentral()
