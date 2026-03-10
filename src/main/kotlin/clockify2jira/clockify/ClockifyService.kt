@@ -30,7 +30,9 @@ class ClockifyServiceImpl : ClockifyService {
         return generateSequence { fetchPage(start, end, pageNumber++) }
             .flatMap {
                 it.map { entry -> entry.toClockifyEntry() }
-            }.toList()
+            }
+            .filter { entry -> entry.duration != null}
+            .toList()
     }
 
     private fun fetchPage(start: LocalDate, end: LocalDate, pageNumber: Int): List<TimeEntry>? {
