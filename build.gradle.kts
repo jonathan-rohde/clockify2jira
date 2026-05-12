@@ -93,8 +93,8 @@ tasks.register("openApiGenerateAll") {
 tasks.register("openApiGenerateClockify", GenerateTask::class) {
     group = "generation"
     generatorName = "kotlin"
-    inputSpec = File("${projectDir}/api/clockify/clockify-openapi.yaml").toURI().toString()
-    outputDir = "${buildDir}/generated/openapi"
+    inputSpec = layout.projectDirectory.file("api/clockify/clockify-openapi.yaml") //layoutFile("${projectDir}/api/clockify/clockify-openapi.yaml").toURI().toString()
+    outputDir = layout.buildDirectory.dir("generated/openapi")
     apiPackage = "clockify2jira.clockify.api"
     modelPackage = "clockify2jira.clockify.model"
     configOptions = mapOf(
@@ -114,8 +114,8 @@ tasks.register("openApiGenerateClockify", GenerateTask::class) {
 tasks.register("openApiGenerateJira", GenerateTask::class) {
     group = "generation"
     generatorName = "kotlin"
-    inputSpec = File("${projectDir}/api/jira/jira-v3-openapi.yaml").toURI().toString()
-    outputDir = "${buildDir}/generated/openapi"
+    inputSpec = layout.projectDirectory.file("api/jira/jira-v3-openapi.yaml")
+    outputDir = layout.buildDirectory.dir("generated/openapi")
     apiPackage = "clockify2jira.jira.api"
     modelPackage = "clockify2jira.jira.model"
     configOptions = mapOf(
