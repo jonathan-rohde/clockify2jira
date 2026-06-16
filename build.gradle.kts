@@ -8,7 +8,7 @@ plugins {
     id("org.openapi.generator") version "7.22.0"
     id("org.springframework.boot") version "4.0.6"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("plugin.spring") version "2.3.21"
+    kotlin("plugin.spring") version "2.4.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
