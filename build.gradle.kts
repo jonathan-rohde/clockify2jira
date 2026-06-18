@@ -3,12 +3,14 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
+val kotlinVersion = "2.4.0"
+
 plugins {
-    kotlin("jvm") version "2.4.0"
+    kotlin("jvm") version kotlinVersion
     id("org.openapi.generator") version "7.22.0"
     id("org.springframework.boot") version "4.0.6"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("plugin.spring") version "2.4.0"
+    kotlin("plugin.spring") version kotlinVersion
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
